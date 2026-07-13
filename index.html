@@ -87,6 +87,7 @@ nav.tabs button.on{color:var(--accent); font-weight:700;}
 .who.a{background:var(--whoA);} .who.b{background:var(--whoB);}
 .who.ab{background:linear-gradient(90deg,var(--whoA) 50%,var(--whoB) 50%);}
 .progress{font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums;}
+.done-card{opacity:.75;}
 .notice{background:var(--warn-soft); border-radius:8px; padding:10px 12px; font-size:13.5px; margin-bottom:10px;}
 .notice .row{margin-top:6px;}
 .tray-chip{display:inline-flex; align-items:center; gap:6px; background:var(--chip); border-radius:999px; padding:5px 6px 5px 12px; font-size:13px; margin:0 6px 6px 0;}
@@ -344,27 +345,37 @@ function renderDay(el, date, isToday){
     <button class="primary" data-add="${date}">追加</button>
   </div></div>`;
 
+  const sortTasks = (x,y)=>((x[1].time||"99")+x[1].name).localeCompare((y[1].time||"99")+y[1].name,"ja");
+  const taskRow = (k,t)=>`<div class="task ${t.done?"done":""}">
+      <input type="checkbox" data-done="${esc(k)}" ${t.done?"checked":""}>
+      <button class="nm" data-edit="${esc(k)}">${esc(t.name)}</button>
+      <span class="chips">
+        ${t.kind==="carry"?`<span class="chip carry">繰越</span>`:""}
+        ${t.time?`<span class="chip time">${esc(t.time)}</span>`:""}
+        ${t.who?`<span class="who ${t.who}" title="${esc(whoLabel(t.who))}"></span>`:""}
+      </span>
+    </div>`;
+  const pending = entries.filter(([,t])=>!t.done);
+  const doneList = entries.filter(([,t])=>t.done).sort(sortTasks);
+
   if(!entries.length){
     html += `<div class="card"><p class="small">まだ予定がありません。「定番」タブに毎日のやることを登録すると、毎日自動でここに並びます。</p></div>`;
+  } else if(!pending.length){
+    html += `<div class="card"><p style="text-align:center">今日の予定はぜんぶ完了しました 🎉</p></div>`;
   } else {
     html += `<div class="card">`;
     BANDS.forEach(([bid,blabel])=>{
-      const its = entries.filter(([,t])=>(t.band||"anytime")===bid)
-        .sort((x,y)=>((x[1].time||"99")+x[1].name).localeCompare((y[1].time||"99")+y[1].name,"ja"));
+      const its = pending.filter(([,t])=>(t.band||"anytime")===bid).sort(sortTasks);
       if(!its.length) return;
       html += `<div class="band-title">${blabel}</div>`;
-      its.forEach(([k,t])=>{
-        html += `<div class="task ${t.done?"done":""}">
-          <input type="checkbox" data-done="${esc(k)}" ${t.done?"checked":""}>
-          <button class="nm" data-edit="${esc(k)}">${esc(t.name)}</button>
-          <span class="chips">
-            ${t.kind==="carry"?`<span class="chip carry">繰越</span>`:""}
-            ${t.time?`<span class="chip time">${esc(t.time)}</span>`:""}
-            ${t.who?`<span class="who ${t.who}" title="${esc(whoLabel(t.who))}"></span>`:""}
-          </span>
-        </div>`;
-      });
+      its.forEach(([k,t])=>{ html += taskRow(k,t); });
     });
+    html += `</div>`;
+  }
+
+  if(doneList.length){
+    html += `<h2>完了 (${doneList.length})</h2><div class="card done-card">`;
+    doneList.forEach(([k,t])=>{ html += taskRow(k,t); });
     html += `</div>`;
   }
 
