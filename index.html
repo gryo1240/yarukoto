@@ -157,6 +157,8 @@ function load(){
 function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
 
 /* ============ データ層(ローカル/Firebase共通) ============ */
+// 初回公開はローカル保存のみ提供。同期UIはFirebaseの所在・セキュリティルール確認後に解禁予定(2026-07-14)
+const SYNC_UI_ENABLED = false;
 let ROOM = S.local;          // 同期時は最新スナップショット
 let fbRef = null, connected = false;
 const syncOn = ()=>!!(S.settings.cfg && S.settings.rid);
@@ -618,8 +620,8 @@ function renderSettings(){
   </div>
 
   <div class="card">
-    <h2 style="margin-top:0">夫婦で同期 ${sync?`<span class="chip ${connected?"time":""}">${connected?"接続OK":"オフライン"}</span>`:`<span class="chip">未設定</span>`}</h2>
-    ${sync ? `
+    <h2 style="margin-top:0">夫婦で同期 <span class="chip">近日公開</span></h2>
+    ${SYNC_UI_ENABLED ? (sync ? `
       <p class="small">同期は有効です。もう1台のスマホでは、下の招待コードを「招待コードで参加」に貼り付けてください。</p>
       <div class="row" style="margin-top:8px">
         <button id="btnInvite" class="primary">📋 招待コードをコピー</button>
@@ -649,6 +651,8 @@ function renderSettings(){
         </ol>
         <p class="small">※データは自分のFirebase(無料枠)に保存されます。ルームIDが実質のパスワードなので、招待コードは家族以外に送らないでください。</p>
       </details>
+    `) : `
+      <p class="small">夫婦・家族で同じリストを共有できる同期機能を準備中です。もうしばらくお待ちください。今のところは、この端末だけでご利用いただけます。</p>
     `}
   </div>
 
@@ -669,7 +673,7 @@ function renderSettings(){
   el.querySelectorAll("#meSeg button").forEach(b=>b.onclick=()=>{
     S.settings.myRole=b.dataset.m; save(); renderSettings();
   });
-  if(sync){
+  if(SYNC_UI_ENABLED && sync){
     $("#btnInvite").onclick = ()=>{
       copyText(inviteCode(), $("#btnInvite"), "✅ コピーしました(相手に送る)");
     };
@@ -679,7 +683,7 @@ function renderSettings(){
       S.settings.cfg=null; S.settings.rid=null; connected=false;
       ROOM = S.local; save(); render();
     };
-  } else {
+  } else if(SYNC_UI_ENABLED){
     $("#btnNewRoom").onclick = ()=>{
       const p = parseConfig($("#cfgArea").value + " " + $("#dbUrlArea").value);
       if(!p){ alert("構成(config)を読み取れませんでした。firebaseConfig 全体を貼り付けてください。"); return; }
