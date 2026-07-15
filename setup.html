@@ -103,10 +103,15 @@ a{color:var(--accent);}
 
 <div class="step"><span class="no">STEP 5</span>
 <h2>「config」(保管場所の住所メモ)をコピーする</h2>
-<ol>
-<li>画面の<b>左上にある ⚙(歯車マーク)</b> → <b class="btnname">プロジェクトの設定</b> を押す</li>
-<li>画面を下にスクロールして「マイアプリ」のところにある <b class="btnname">&lt;/&gt;</b>(ウェブという丸いボタン)を押す</li>
-<li>「アプリのニックネーム」に <b>kazoku</b> と入れて <b class="btnname">アプリを登録</b>(チェックボックスは触らなくてOK)</li>
+<p><b>この設定画面を開く</b>(歯車マークを探すのが一番迷いやすいので、下のリンクが確実です)</p>
+<p style="margin-top:8px"><a href="https://console.firebase.google.com/project/_/settings/general/" target="_blank" rel="noopener" style="font-weight:700">👉 プロジェクトの設定ページを開く</a></p>
+<p class="tip">💡 プロジェクトが複数あるときはここで<b>「kazoku」を選ぶ</b>画面が出ます。1つしか無ければ自動で入ります。<br>
+(自分で探す場合: 左メニューの一番上「<b>プロジェクトの概要</b>」という文字の<b>右はし</b>に、小さい ⚙ がひっそり付いています。スマホは左上の「☰」を押すとメニューが出ます)</p>
+<ol style="margin-top:12px">
+<li>開いたページ(「<b>全般</b>」タブ)を、そのまま<b>下にスクロール</b>していく</li>
+<li>「プロジェクトID」などの情報のあとに「<b>マイアプリ</b>」という見出しが出てくる</li>
+<li>その下に丸いアイコンが並んでいる中から、<b class="btnname">&lt;/&gt;</b>(ウェブのマーク)を押す</li>
+<li>「アプリのニックネーム」に <b>kazoku</b> と入れて <b class="btnname">アプリを登録</b>(下のチェックボックスは触らなくてOK)</li>
 <li>すると <b>const firebaseConfig = { apiKey: "…" … };</b> という文字のかたまりが出ます。<b>この { から } までを全部コピー</b>(かたまりの右上にコピーボタンが出ることもあります)</li>
 </ol>
 <p class="warn">⚠ このメモ(config)と招待コードは「家のカギ」と同じです。家族以外には送らないでください。</p>
@@ -136,6 +141,7 @@ a{color:var(--accent);}
 <div class="step">
 <h2>こまったときは</h2>
 <dl class="qa">
+<dt>Q. ⚙(歯車マーク)がどこにあるか分からない</dt><dd>A. STEP 5にある「👉 プロジェクトの設定ページを開く」のリンクを使えば、歯車を探さなくても直接たどり着けます。</dd>
 <dt>Q. 画面が英語で出てくる</dt><dd>A. ページの一番下に言語選択があれば「日本語」に。無くてもボタンの場所は同じです(Create project=プロジェクトを作成、Build=構築、Rules=ルール、Publish=公開)。</dd>
 <dt>Q. 「書き込みに失敗しました」と出る</dt><dd>A. STEP 4のルールの貼り替えがうまくいっていません。もう一度「ルール」タブを開いて、全部消してから貼り直して「公開」。</dd>
 <dt>Q. configに databaseURL が無いと言われた</dt><dd>A. STEP 3(データベース作成)を飛ばしています。STEP 3をやってから、Realtime Databaseの画面の上に出ている https://〜firebasedatabase.app という文字をコピーして、アプリの追加欄に貼ってください。</dd>
