@@ -38,6 +38,7 @@
 - `docs/screenshot-templates.png` — 定番タブ(繰り返しの登録)
 - `docs/screenshot-edit.png` — 予定の編集シート(時間帯・時刻・担当)
 - `icon-512.png` — アプリアイコン(藍色に📝)
+- `setup.html` — 同期の「かんたん設定ガイド」ページ(https://gryo1240.github.io/yarukoto/setup.html)。超初心者向けにFirebase設定を1画面ずつ説明。**記事から直接リンクしてよい**(3アプリ共通のガイド)
 
 ## 記事の下書き(そのまま使用・編集可)
 

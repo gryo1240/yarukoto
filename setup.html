@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#34558B">
+<title>同期のかんたん設定ガイド(1回だけ・約10分)</title>
+<style>
+:root{
+  --bg:#F5F4F0; --surface:#FFFFFF; --ink:#262A33; --muted:#6E7380;
+  --line:#E1E0DA; --accent:#34558B; --accent-ink:#FFFFFF; --accent-soft:#E7EDF6;
+  --warn:#A85B32; --warn-soft:#F5E8DF; --chip:#EDECE6; --ok:#3E7A52; --okbg:#E5F0E9;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#15181E; --surface:#1E222A; --ink:#E5E7EA; --muted:#9AA0AB;
+    --line:#32363F; --accent:#7FA3D8; --accent-ink:#101725; --accent-soft:#25304A;
+    --warn:#D89468; --warn-soft:#3A2C22; --chip:#2A2E37; --ok:#7FBE97; --okbg:#233A2C; }
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--bg); color:var(--ink);
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic UI","Noto Sans JP",Meiryo,sans-serif;
+  font-size:15.5px; line-height:1.9; padding:20px 16px 60px;}
+main{max-width:640px; margin:0 auto;}
+h1{font-size:20px; line-height:1.5; margin-bottom:6px;}
+.lead{color:var(--muted); font-size:14px; margin-bottom:20px;}
+.step{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:14px;}
+.step .no{display:inline-block; background:var(--accent); color:var(--accent-ink); font-weight:700;
+  border-radius:999px; padding:1px 13px; font-size:13.5px; margin-bottom:6px;}
+.step h2{font-size:16px; margin-bottom:8px;}
+.step p, .step li{font-size:14.5px;}
+.step ol{padding-left:1.5em;}
+.step li{margin-bottom:8px;}
+b.btnname{background:var(--chip); border-radius:6px; padding:1px 8px; white-space:nowrap;}
+.tip{background:var(--accent-soft); border-radius:8px; padding:8px 12px; font-size:13px; margin-top:10px;}
+.warn{background:var(--warn-soft); border-radius:8px; padding:8px 12px; font-size:13px; margin-top:10px;}
+.done{background:var(--okbg); border-radius:8px; padding:8px 12px; font-size:13.5px; margin-top:10px;}
+pre{background:var(--chip); border-radius:8px; padding:10px 12px; font-size:12px; overflow-x:auto;
+  white-space:pre; line-height:1.6; margin:8px 0;}
+button.copy{font:inherit; cursor:pointer; border:none; border-radius:8px; padding:9px 16px;
+  background:var(--accent); color:var(--accent-ink); font-weight:700; font-size:14px;}
+a{color:var(--accent);}
+.qa{font-size:13.5px;}
+.qa dt{font-weight:700; margin-top:10px;}
+</style>
+</head>
+<body>
+<main>
+<h1>📱⇄📱 ふたりのスマホを同期する<br>かんたん設定ガイド</h1>
+<p class="lead">やることは「Googleの無料の保管場所を1つ作って、その住所をアプリに教える」だけ。<b>1回やれば、3つのアプリ(やること・せんたく・そうじ)全部で使えます。</b>スマホでもできますが、パソコンのほうがラクです。</p>
+
+<div class="step"><span class="no">じゅんび</span>
+<h2>用意するもの</h2>
+<p>Googleアカウント(〜@gmail.com のメールアドレス)とそのパスワードだけ。ふたり分は要りません。<b>どちらか1人のアカウントでOK</b>です。</p>
+</div>
+
+<div class="step"><span class="no">STEP 1</span>
+<h2>Firebaseのページを開いてログイン</h2>
+<ol>
+<li><a href="https://console.firebase.google.com/?hl=ja" target="_blank" rel="noopener">console.firebase.google.com を開く(タップで開きます)</a></li>
+<li>Googleのログイン画面が出たら、いつものGmailアドレスとパスワードでログイン</li>
+</ol>
+<p class="tip">💡 「Firebase」はGoogleがやっている無料のデータ保管サービスの名前です。あやしいものではありません。</p>
+</div>
+
+<div class="step"><span class="no">STEP 2</span>
+<h2>「プロジェクト」を1つ作る(=自分専用の保管場所)</h2>
+<ol>
+<li><b class="btnname">プロジェクトを作成</b>(または「開始する」)という大きなボタンを押す</li>
+<li>名前を聞かれたら <b>kazoku</b> と入力(何でもOK)→ <b class="btnname">続行</b></li>
+<li>「Gemini」や「AI」の案内が出たら、スイッチは<b>オフのまま</b>で <b class="btnname">続行</b></li>
+<li>「Googleアナリティクス」のスイッチを<b>オフ</b>にする → <b class="btnname">プロジェクトを作成</b></li>
+<li>くるくる回るのを待って <b class="btnname">続行</b> を押す</li>
+</ol>
+</div>
+
+<div class="step"><span class="no">STEP 3</span>
+<h2>データベース(保管箱)を作る</h2>
+<ol>
+<li>画面の左のメニューから <b class="btnname">構築</b> を押して、中の <b class="btnname">Realtime Database</b> を押す<br>
+<span style="font-size:13px;color:var(--muted)">(スマホで左メニューが見えないときは、左上の「≡」を押すと出ます)</span></li>
+<li><b class="btnname">データベースを作成</b> を押す</li>
+<li>「ロケーション」は<b>そのまま</b>で <b class="btnname">次へ</b></li>
+<li><b class="btnname">テストモードで開始</b> を選んで <b class="btnname">有効にする</b></li>
+</ol>
+</div>
+
+<div class="step"><span class="no">STEP 4</span>
+<h2>カギのかけ方を貼り替える(コピペするだけ)</h2>
+<ol>
+<li>データベースの画面の上のほうにある <b class="btnname">ルール</b> というタブを押す</li>
+<li>下のボタンでルールをコピーする<br>
+<button class="copy" id="copyRules">📋 ルールをコピーする</button></li>
+<li>画面に元から書いてある文字を<b>全部消して</b>、コピーしたものを貼り付ける</li>
+<li><b class="btnname">公開</b> ボタンを押す(「公開されました」と出ればOK)</li>
+</ol>
+<pre id="rulesText">{ "rules": {
+  "rooms":  { "$rid": { ".read": true, ".write": true } },
+  "closet": { "$rid": { ".read": true, ".write": true } },
+  "souji":  { "$rid": { ".read": true, ".write": true } }
+} }</pre>
+<p class="tip">💡 これは「アプリの招待コードを知っている家族だけが読み書きできる」というカギの設定です。</p>
+</div>
+
+<div class="step"><span class="no">STEP 5</span>
+<h2>「config」(保管場所の住所メモ)をコピーする</h2>
+<ol>
+<li>画面の<b>左上にある ⚙(歯車マーク)</b> → <b class="btnname">プロジェクトの設定</b> を押す</li>
+<li>画面を下にスクロールして「マイアプリ」のところにある <b class="btnname">&lt;/&gt;</b>(ウェブという丸いボタン)を押す</li>
+<li>「アプリのニックネーム」に <b>kazoku</b> と入れて <b class="btnname">アプリを登録</b>(チェックボックスは触らなくてOK)</li>
+<li>すると <b>const firebaseConfig = { apiKey: "…" … };</b> という文字のかたまりが出ます。<b>この { から } までを全部コピー</b>(かたまりの右上にコピーボタンが出ることもあります)</li>
+</ol>
+<p class="warn">⚠ このメモ(config)と招待コードは「家のカギ」と同じです。家族以外には送らないでください。</p>
+</div>
+
+<div class="step"><span class="no">STEP 6</span>
+<h2>アプリに貼り付ける(1台目のスマホ)</h2>
+<ol>
+<li>「きょうのやること」アプリを開く → <b class="btnname">⚙設定</b> タブ</li>
+<li>「夫婦で同期」のところの入力欄に、さっきコピーしたものを<b>そのまま貼り付け</b></li>
+<li><b class="btnname">同期を開始</b> を押す →「同期を開始しました」と出ます</li>
+<li><b class="btnname">📋 招待コードをコピー</b> を押して、<b>LINEなどで相手に送る</b></li>
+</ol>
+</div>
+
+<div class="step"><span class="no">STEP 7</span>
+<h2>相手のスマホで招待コードを貼る(2台目)</h2>
+<ol>
+<li>相手のスマホでも「きょうのやること」アプリを開く → <b class="btnname">⚙設定</b> タブ</li>
+<li>「もう1台のスマホはこちら」の欄に、LINEで届いた<b>招待コードを貼り付け</b></li>
+<li><b class="btnname">招待コードで参加</b> を押す</li>
+</ol>
+<p class="done">🎉 これで完成! 片方がチェックすると、数秒でもう片方のスマホにも反映されます。画面右上の丸が<b style="color:var(--ok)">緑</b>なら同期中です。</p>
+<p class="tip">💡 「せんたくタグ」「そうじナビ」も同期したいときは、各アプリの設定タブに<b>同じconfig</b>を貼って「同期を開始」→ 出てきた招待コードを相手に送る、だけです(STEP1〜5のやり直しは不要)。</p>
+</div>
+
+<div class="step">
+<h2>こまったときは</h2>
+<dl class="qa">
+<dt>Q. 画面が英語で出てくる</dt><dd>A. ページの一番下に言語選択があれば「日本語」に。無くてもボタンの場所は同じです(Create project=プロジェクトを作成、Build=構築、Rules=ルール、Publish=公開)。</dd>
+<dt>Q. 「書き込みに失敗しました」と出る</dt><dd>A. STEP 4のルールの貼り替えがうまくいっていません。もう一度「ルール」タブを開いて、全部消してから貼り直して「公開」。</dd>
+<dt>Q. configに databaseURL が無いと言われた</dt><dd>A. STEP 3(データベース作成)を飛ばしています。STEP 3をやってから、Realtime Databaseの画面の上に出ている https://〜firebasedatabase.app という文字をコピーして、アプリの追加欄に貼ってください。</dd>
+<dt>Q. お金はかかる?</dt><dd>A. かかりません。家族のメモ程度のデータ量では無料枠の1%も使いません。クレジットカード登録も不要です。</dd>
+</dl>
+</div>
+
+<p class="lead" style="margin-top:20px"><a href="./">← きょうのやること に戻る</a></p>
+</main>
+<script>
+document.getElementById("copyRules").addEventListener("click", function(){
+  var t=document.getElementById("rulesText").textContent;
+  var btn=this;
+  function done(){ btn.textContent="✅ コピーしました。Firebaseの画面に貼ってください"; }
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done); }
+  else{ var ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(e){} ta.remove(); }
+});
+</script>
+</body>
+</html>
